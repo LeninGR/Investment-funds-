@@ -1,6 +1,7 @@
 package com.investment.funds.application.usecase;
 
 import com.investment.funds.application.usecase.dto.SubscribeInput;
+import com.investment.funds.domain.exception.BusinessException;
 import com.investment.funds.domain.exception.FundNotFoundException;
 import com.investment.funds.domain.exception.InsufficientBalanceException;
 import com.investment.funds.domain.model.Client;
@@ -36,6 +37,10 @@ public class SubscribeUseCase implements UseCase<SubscribeInput, Void> {
 
         Fund fund = fundRepository.findById(input.fundId())
                 .orElseThrow(() -> new FundNotFoundException(input.fundId()));
+
+        if (transactionService.hasActiveSubscription(input.clientId(), input.fundId())) {
+            throw new BusinessException("Client is already subscribed to fund " + fund.name());
+        }
 
         Client updatedClient;
         try {

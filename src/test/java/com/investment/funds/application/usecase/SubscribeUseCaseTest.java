@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.investment.funds.application.usecase.dto.SubscribeInput;
+import com.investment.funds.domain.exception.BusinessException;
 import com.investment.funds.domain.exception.InsufficientBalanceException;
 import com.investment.funds.domain.model.Client;
 import com.investment.funds.domain.model.Fund;
@@ -61,6 +62,7 @@ class SubscribeUseCaseTest {
 
         when(clientRepository.findById(clientId)).thenReturn(Optional.of(client));
         when(fundRepository.findById(fundId)).thenReturn(Optional.of(fund));
+        when(transactionService.hasActiveSubscription(clientId, fundId)).thenReturn(false);
 
         // Act
         subscribe.execute(new SubscribeInput(clientId, fundId));
@@ -73,6 +75,28 @@ class SubscribeUseCaseTest {
 
         // Check that balance was deducted on the SAVED client
         assertEquals(new BigDecimal("425000"), clientCaptor.getValue().balance());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenAlreadySubscribed() {
+        // Arrange
+        String clientId = "client1";
+        String fundId = "fund1";
+        BigDecimal initialBalance = new BigDecimal("500000");
+        BigDecimal minAmount = new BigDecimal("75000");
+
+        Client client = new Client(clientId, "Client Test", initialBalance, "client@test.com", "1234567890",
+                NotificationPreference.EMAIL);
+        Fund fund = new Fund(fundId, "FPV_TEST_FUND", minAmount, "FPV");
+
+        when(clientRepository.findById(clientId)).thenReturn(Optional.of(client));
+        when(fundRepository.findById(fundId)).thenReturn(Optional.of(fund));
+        when(transactionService.hasActiveSubscription(clientId, fundId)).thenReturn(true);
+
+        // Act & Assert
+        Exception exception = assertThrows(BusinessException.class,
+                () -> subscribe.execute(new SubscribeInput(clientId, fundId)));
+        assertEquals("Client is already subscribed to fund " + fund.name(), exception.getMessage());
     }
 
     @Test
@@ -89,6 +113,9 @@ class SubscribeUseCaseTest {
 
         when(clientRepository.findById(clientId)).thenReturn(Optional.of(client));
         when(fundRepository.findById(fundId)).thenReturn(Optional.of(fund));
+        // Need to mock hasActiveSubscription for this test too, as it's called before
+        // debit
+        when(transactionService.hasActiveSubscription(clientId, fundId)).thenReturn(false);
 
         // Act & Assert
         assertThrows(InsufficientBalanceException.class, () -> subscribe.execute(new SubscribeInput(clientId, fundId)));
