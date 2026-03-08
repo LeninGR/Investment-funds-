@@ -1,0 +1,26 @@
+service: investment-funds
+
+provider:
+  name: aws
+  runtime: java17
+  memorySize: 1024
+  timeout: 30
+  region: us-east-1
+  environment:
+    SPRING_PROFILES_ACTIVE: ${opt:stage, 'prod'}
+    MONGO_HOST: ${env:MONGO_HOST}
+    MONGO_PORT: ${env:MONGO_PORT}
+    MONGO_DATABASE: ${env:MONGO_DATABASE}
+    MONGO_USERNAME: ${env:MONGO_USERNAME}
+    MONGO_PASSWORD: ${env:MONGO_PASSWORD}
+
+package:
+  artifact: build/libs/investment-funds-aws.jar
+
+functions:
+  api:
+    handler: com.investment.funds.StreamLambdaHandler
+    events:
+      - http:
+          path: /{proxy+}
+          method: any
