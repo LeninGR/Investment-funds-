@@ -2,6 +2,7 @@ package com.investment.funds.infrastructure.adapter.mongodb.repository;
 
 import java.util.Optional;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.investment.funds.domain.model.Client;
@@ -10,6 +11,7 @@ import com.investment.funds.domain.port.ClientRepository;
 import com.investment.funds.infrastructure.adapter.mongodb.document.ClientDocument;
 
 @Component
+@Profile("!local")
 public class MongoClientRepositoryAdapter implements ClientRepository {
 
     private final SpringDataClientRepository springDataClientRepository;

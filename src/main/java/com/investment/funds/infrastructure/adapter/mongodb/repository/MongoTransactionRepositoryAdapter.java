@@ -3,6 +3,7 @@ package com.investment.funds.infrastructure.adapter.mongodb.repository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.investment.funds.domain.model.Transaction;
@@ -11,6 +12,7 @@ import com.investment.funds.domain.port.TransactionRepository;
 import com.investment.funds.infrastructure.adapter.mongodb.document.TransactionDocument;
 
 @Component
+@Profile("!local")
 public class MongoTransactionRepositoryAdapter implements TransactionRepository {
 
     private final SpringDataTransactionRepository springDataTransactionRepository;

@@ -1,7 +1,6 @@
 package com.investment.funds.infrastructure.adapter.mongodb.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,7 +31,8 @@ class MongoTransactionRepositoryAdapterTest {
     @Test
     void shouldSave() {
         // Arrange
-        Transaction transaction = new Transaction("1", "client1", "fund1", TransactionType.OPENING, BigDecimal.TEN, LocalDateTime.now());
+        Transaction transaction = new Transaction("1", "client1", "fund1", TransactionType.OPENING, BigDecimal.TEN,
+                LocalDateTime.now());
 
         // Act
         mongoTransactionRepositoryAdapter.save(transaction);

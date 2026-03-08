@@ -2,6 +2,7 @@ package com.investment.funds.infrastructure.adapter.mongodb.repository;
 
 import java.util.Optional;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.investment.funds.domain.model.Fund;
@@ -9,6 +10,7 @@ import com.investment.funds.domain.port.FundRepository;
 import com.investment.funds.infrastructure.adapter.mongodb.document.FundDocument;
 
 @Component
+@Profile("!local")
 public class MongoFundRepositoryAdapter implements FundRepository {
 
     private final SpringDataFundRepository springDataFundRepository;
