@@ -2,6 +2,7 @@ package com.investment.funds.infrastructure.adapter.mongodb.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -49,6 +50,8 @@ class MongoFundRepositoryAdapterTest {
     void save_ShouldPersistFund() {
         // Arrange
         Fund fund = new Fund("1", "Fund Name", BigDecimal.TEN, "Category");
+        FundDocument document = new FundDocument("1", "Fund Name", BigDecimal.TEN, "Category");
+        when(springDataFundRepository.save(any(FundDocument.class))).thenReturn(document);
 
         // Act
         mongoFundRepositoryAdapter.save(fund);

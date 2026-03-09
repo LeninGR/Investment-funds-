@@ -32,10 +32,9 @@ class FundControllerTest {
         @Autowired
         private ObjectMapper objectMapper;
 
-        @MockBean
+        @MockBean(name = "subscribe")
         private UseCase<SubscribeInput, Void> subscribeUseCase;
-
-        @MockBean
+        @MockBean(name = "cancelSubscribe")
         private UseCase<CancelSubscribeInput, Void> cancelSubscribeUseCase;
 
         @Test

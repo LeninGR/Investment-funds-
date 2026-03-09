@@ -25,7 +25,7 @@ class ClientControllerTest {
 
     private MockMvc mockMvc;
 
-    @Mock
+    @Mock(name = "getClient")
     private UseCase<String, Client> getClient;
 
     @InjectMocks
