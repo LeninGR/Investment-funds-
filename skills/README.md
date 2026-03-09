@@ -17,17 +17,11 @@ skills/
 
 ## 🛠️ Skills Disponibles
 
-1. **[commit](commit/SKILL.md)**: Reglas para commits que alimentan el sistema
-   de changelog automático.
-2. **[changelog](changelog/SKILL.md)**: Uso del sistema MCP para mantener el
-   historial del proyecto.
-3. **[react](react/SKILL.md)**: Guía de desarrollo para Expo y React Native en
-   este entorno.
-4. **[typescript](typescript/SKILL.md)**: Reglas de tipado estricto y patrones
-   de TypeScript.
-5. **[pr](pr/SKILL.md)**: Convenciones para Pull Requests.
-6. **[skill-creator](skill-creator/SKILL.md)**: Meta-skill para crear nuevas
-   habilidades.
+1. **[commit](commit/SKILL.md)**: Reglas para commits que alimentan el sistema de changelog automático.
+2. **[pr](pr/SKILL.md)**: Convenciones para Pull Requests.
+3. **[skill-creator](skill-creator/SKILL.md)**: Meta-skill para crear nuevas habilidades.
+4. **[tdd](tdd/SKILL.md)**: Guía para desarrollo guiado por pruebas.
+5. **[skill-sync](skill-sync/SKILL.md)**: Sincronización de skills entre repositorios.
 
 ## 🚀 Cómo usar una Skill
 
