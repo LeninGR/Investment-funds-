@@ -11,8 +11,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,17 +29,17 @@ class FundControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockitoBean
-    private UseCase<SubscribeInput, Void> subscribeUseCase;
-
-    @MockitoBean
-    private UseCase<CancelSubscribeInput, Void> cancelSubscribeUseCase;
-
     @Autowired
     private ObjectMapper objectMapper;
 
+    @MockBean
+    private UseCase<SubscribeInput, Void> subscribeUseCase;
+
+    @MockBean
+    private UseCase<CancelSubscribeInput, Void> cancelSubscribeUseCase;
+
     @Test
-    void shouldSubscribeSuccessfully() throws Exception {
+    void subscribe_ShouldReturnOk_WhenSuccessful() throws Exception {
         // Arrange
         SubscribeRequest request = new SubscribeRequest();
         request.setClientId("client1");
