@@ -51,76 +51,71 @@ Base de datos NoSQL orientada a documentos.
 
 El siguiente diagrama muestra cómo interactúan las capas de la aplicación, respetando la regla de dependencia (las dependencias apuntan hacia adentro).
 
-```mermaid
-graph TD
-    subgraph "External Actors"
-        User(Cliente - API Consumer)
-        Admin(Administrador)
-    end
+```plantuml
+@startuml
+!theme plain
+skinparam componentStyle uml2
+skinparam packageStyle rectangle
 
-    subgraph "Infrastructure Layer - Driving Adapters"
-        APIGateway[AWS API Gateway]
-        LambdaHandler[StreamLambdaHandler]
-        Controllers[Rest Controllers]
-    end
+package "External Actors" {
+    actor "Cliente - API Consumer" as User
+    actor "Administrador" as Admin
+}
 
-    subgraph "Application Layer"
-        UseCases[Casos de Uso - Subscribe, Cancel, History]
-        DTOs[DTOs Input/Output]
-    end
+package "Infrastructure Layer - Driving Adapters" {
+    [AWS API Gateway] as APIGateway
+    [StreamLambdaHandler] as LambdaHandler
+    [Rest Controllers] as Controllers
+}
 
-    subgraph "Domain Layer - Core"
-        Entities[Entidades - Client, Fund, Transaction]
-        DomainServices[Servicios de Dominio]
-        PortsIn[Puertos Entrada - Interfaces UseCase]
-        PortsOut[Puertos Salida - Interfaces Repository/Notification]
-    end
+package "Application Layer" {
+    [Casos de Uso\n(Subscribe, Cancel, History)] as UseCases
+    [DTOs Input/Output] as DTOs
+}
 
-    subgraph "Infrastructure Layer - Driven Adapters"
-        MongoAdapter[Mongo Repository Adapter]
-        InMemoryAdapter[In-Memory Repository Adapter]
-        NotifyAdapter[Notification Adapter]
-    end
+package "Domain Layer - Core" {
+    [Entidades\n(Client, Fund, Transaction)] as Entities
+    [Servicios de Dominio] as DomainServices
+    [Puertos Entrada\n(Interfaces UseCase)] as PortsIn
+    [Puertos Salida\n(Interfaces Repository/Notification)] as PortsOut
+}
 
-    subgraph "External Systems"
-        MongoDB[(MongoDB Atlas)]
-        EmailSvc[Email Service]
-        SMSSvc[SMS Service]
-    end
+package "Infrastructure Layer - Driven Adapters" {
+    [Mongo Repository Adapter] as MongoAdapter
+    [In-Memory Repository Adapter] as InMemoryAdapter
+    [Notification Adapter] as NotifyAdapter
+}
 
-    %% Relationships
-    User --> APIGateway
-    Admin --> APIGateway
-    APIGateway --> LambdaHandler
-    LambdaHandler --> Controllers
-    
-    Controllers --> UseCases
-    UseCases -.-> DTOs
-    
-    UseCases --> DomainServices
-    UseCases --> Entities
-    UseCases ..|> PortsIn
-    UseCases --> PortsOut
-    DomainServices --> Entities
-    
-    MongoAdapter ..|> PortsOut
-    InMemoryAdapter ..|> PortsOut
-    NotifyAdapter ..|> PortsOut
-    
-    MongoAdapter --> MongoDB
-    NotifyAdapter --> EmailSvc
-    NotifyAdapter --> SMSSvc
+package "External Systems" {
+    database "MongoDB Atlas" as MongoDB
+    [Email Service] as EmailSvc
+    [SMS Service] as SMSSvc
+}
 
-    %% Styles
-    classDef domain fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    classDef app fill:#fff3e0,stroke:#e65100,stroke-width:2px;
-    classDef infraDriving fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
-    classDef infraDriven fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
+' Relationships
+User --> APIGateway
+Admin --> APIGateway
+APIGateway --> LambdaHandler
+LambdaHandler --> Controllers
 
-    class Entities,DomainServices,PortsIn,PortsOut domain;
-    class UseCases,DTOs app;
-    class APIGateway,LambdaHandler,Controllers infraDriving;
-    class MongoAdapter,InMemoryAdapter,NotifyAdapter infraDriven;
+Controllers --> UseCases
+UseCases .> DTOs
+
+UseCases --> DomainServices
+UseCases --> Entities
+UseCases ..|> PortsIn
+UseCases --> PortsOut
+DomainServices --> Entities
+
+MongoAdapter ..|> PortsOut
+InMemoryAdapter ..|> PortsOut
+NotifyAdapter ..|> PortsOut
+
+MongoAdapter --> MongoDB
+NotifyAdapter --> EmailSvc
+NotifyAdapter --> SMSSvc
+
+@enduml
 ```
 
 ## 📂 Estructura de Paquetes
