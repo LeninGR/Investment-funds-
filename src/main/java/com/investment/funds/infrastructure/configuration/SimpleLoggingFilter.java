@@ -40,6 +40,7 @@ public class SimpleLoggingFilter extends OncePerRequestFilter {
             System.out.println(">>> SPRING FILTER: WARNING! No DispatcherServlet found!");
             String[] beanNames = applicationContext.getBeanDefinitionNames();
             System.out.println(">>> SPRING FILTER: Total beans: " + beanNames.length);
+            System.out.println(">>> SPRING FILTER: Bean names: " + java.util.Arrays.toString(beanNames));
         }
 
         System.out.println(">>> SPRING FILTER: Context Path: " + request.getContextPath());
