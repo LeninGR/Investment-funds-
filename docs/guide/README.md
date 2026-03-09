@@ -51,72 +51,7 @@ Base de datos NoSQL orientada a documentos.
 
 El siguiente diagrama muestra cómo interactúan las capas de la aplicación, respetando la regla de dependencia (las dependencias apuntan hacia adentro).
 
-```plantuml
-@startuml
-!theme plain
-skinparam componentStyle uml2
-skinparam packageStyle rectangle
-
-package "External Actors" {
-    actor "Cliente - API Consumer" as User
-    actor "Administrador" as Admin
-}
-
-package "Infrastructure Layer - Driving Adapters" {
-    [AWS API Gateway] as APIGateway
-    [StreamLambdaHandler] as LambdaHandler
-    [Rest Controllers] as Controllers
-}
-
-package "Application Layer" {
-    [Casos de Uso\n(Subscribe, Cancel, History)] as UseCases
-    [DTOs Input/Output] as DTOs
-}
-
-package "Domain Layer - Core" {
-    [Entidades\n(Client, Fund, Transaction)] as Entities
-    [Servicios de Dominio] as DomainServices
-    [Puertos Entrada\n(Interfaces UseCase)] as PortsIn
-    [Puertos Salida\n(Interfaces Repository/Notification)] as PortsOut
-}
-
-package "Infrastructure Layer - Driven Adapters" {
-    [Mongo Repository Adapter] as MongoAdapter
-    [In-Memory Repository Adapter] as InMemoryAdapter
-    [Notification Adapter] as NotifyAdapter
-}
-
-package "External Systems" {
-    database "MongoDB Atlas" as MongoDB
-    [Email Service] as EmailSvc
-    [SMS Service] as SMSSvc
-}
-
-' Relationships
-User --> APIGateway
-Admin --> APIGateway
-APIGateway --> LambdaHandler
-LambdaHandler --> Controllers
-
-Controllers --> UseCases
-UseCases .> DTOs
-
-UseCases --> DomainServices
-UseCases --> Entities
-UseCases ..|> PortsIn
-UseCases --> PortsOut
-DomainServices --> Entities
-
-MongoAdapter ..|> PortsOut
-InMemoryAdapter ..|> PortsOut
-NotifyAdapter ..|> PortsOut
-
-MongoAdapter --> MongoDB
-NotifyAdapter --> EmailSvc
-NotifyAdapter --> SMSSvc
-
-@enduml
-```
+![Diagrama de Componentes](assets/component-diagram.png)
 
 ## 📂 Estructura de Paquetes
 
