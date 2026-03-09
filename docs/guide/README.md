@@ -62,19 +62,11 @@ graph TD
         APIGateway[AWS API Gateway]
         LambdaHandler[StreamLambdaHandler]
         Controllers[Rest Controllers]
-        
-        User --> APIGateway
-        Admin --> APIGateway
-        APIGateway --> LambdaHandler
-        LambdaHandler --> Controllers
     end
 
     subgraph "Application Layer"
         UseCases[Casos de Uso - Subscribe, Cancel, History]
         DTOs[DTOs Input/Output]
-        
-        Controllers --> UseCases
-        UseCases -.-> DTOs
     end
 
     subgraph "Domain Layer - Core"
@@ -82,33 +74,42 @@ graph TD
         DomainServices[Servicios de Dominio]
         PortsIn[Puertos Entrada - Interfaces UseCase]
         PortsOut[Puertos Salida - Interfaces Repository/Notification]
-        
-        UseCases --> DomainServices
-        UseCases --> Entities
-        UseCases ..|> PortsIn
-        UseCases --> PortsOut
-        DomainServices --> Entities
     end
 
     subgraph "Infrastructure Layer - Driven Adapters"
         MongoAdapter[Mongo Repository Adapter]
         InMemoryAdapter[In-Memory Repository Adapter]
         NotifyAdapter[Notification Adapter]
-        
-        MongoAdapter ..|> PortsOut
-        InMemoryAdapter ..|> PortsOut
-        NotifyAdapter ..|> PortsOut
     end
 
     subgraph "External Systems"
         MongoDB[(MongoDB Atlas)]
         EmailSvc[Email Service]
         SMSSvc[SMS Service]
-        
-        MongoAdapter --> MongoDB
-        NotifyAdapter --> EmailSvc
-        NotifyAdapter --> SMSSvc
     end
+
+    %% Relationships
+    User --> APIGateway
+    Admin --> APIGateway
+    APIGateway --> LambdaHandler
+    LambdaHandler --> Controllers
+    
+    Controllers --> UseCases
+    UseCases -.-> DTOs
+    
+    UseCases --> DomainServices
+    UseCases --> Entities
+    UseCases ..|> PortsIn
+    UseCases --> PortsOut
+    DomainServices --> Entities
+    
+    MongoAdapter ..|> PortsOut
+    InMemoryAdapter ..|> PortsOut
+    NotifyAdapter ..|> PortsOut
+    
+    MongoAdapter --> MongoDB
+    NotifyAdapter --> EmailSvc
+    NotifyAdapter --> SMSSvc
 
     %% Styles
     classDef domain fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
