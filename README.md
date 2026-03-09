@@ -1,4 +1,7 @@
 # Investment-funds-
+
+> **Disclaimer:** Este repositorio no corresponde a código oficial de BTG Pactual, únicamente corresponde a una prueba técnica personal.
+
 amaris test
 
 ## How to run locally
