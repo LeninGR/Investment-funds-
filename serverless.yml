@@ -18,7 +18,7 @@ provider:
     MONGO_PASSWORD: ${env:MONGO_PASSWORD}
 
 package:
-  artifact: build/libs/investment-funds-1.0.0-aws-v2.jar
+  artifact: build/libs/investment-funds-aws-v2.jar
 
 functions:
   api:

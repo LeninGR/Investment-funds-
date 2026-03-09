@@ -35,10 +35,10 @@ jobs:
           node-version: "18"
 
       - name: Install Serverless Framework
-        run: npm install -g serverless
+        run: npm install serverless@3.38.0
 
       - name: Serverless Deploy
-        run: serverless deploy --stage prod
+        run: npx serverless deploy --stage prod
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
