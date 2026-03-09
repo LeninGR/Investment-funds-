@@ -7,17 +7,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.investment.funds.application.usecase.UseCase;
 import com.investment.funds.application.usecase.dto.CancelSubscribeInput;
 import com.investment.funds.application.usecase.dto.SubscribeInput;
 import com.investment.funds.domain.exception.BusinessException;
+import com.investment.funds.domain.model.Fund;
 import com.investment.funds.infrastructure.controller.contract.CancelSubscriptionRequest;
 import com.investment.funds.infrastructure.controller.contract.SubscribeRequest;
 
+import jakarta.validation.Valid;
+
+@RestController
 @RequestMapping("/funds")
-@ResponseBody
 public class FundController {
 
     private final UseCase<SubscribeInput, Void> subscribe;
