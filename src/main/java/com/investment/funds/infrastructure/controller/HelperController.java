@@ -14,13 +14,15 @@ public class HelperController {
     private final UseCase<Void, Void> helperUseCase;
 
     public HelperController(UseCase<Void, Void> helperUseCase) {
+        System.out.println(">>> DEBUG: HelperController constructor called!");
         this.helperUseCase = helperUseCase;
     }
 
     @PostMapping("/seed")
     public ResponseEntity<String> seedData() {
+        System.out.println(">>> DEBUG: HelperController.seedData() called!");
         helperUseCase.execute(null);
-        
+        System.out.println(">>> DEBUG: HelperController.seedData() executed helperUseCase!");
         return ResponseEntity.ok("Data seeded successfully");
     }
 }
