@@ -12,7 +12,7 @@ Este archivo proporciona contexto y guías específicas para agentes de IA que t
 
 ## 🛠️ Stack Tecnológico
 
-- **Lenguaje**: Java 17
+- **Lenguaje**: Java 17 (Gestionado vía Gradle Toolchains)
 - **Framework**: Spring Boot 3.2.5
 - **Base de Datos**: MongoDB (Spring Data MongoDB)
 - **Infraestructura**: AWS Lambda (Serverless Framework)
@@ -65,6 +65,7 @@ Para tareas específicas, consulta las skills disponibles en el directorio `skil
 | [commit](file:///skills/commit/SKILL.md) | Guía para realizar commits convencionales. |
 | [pr](file:///skills/pr/SKILL.md) | Convenciones para Pull Requests. |
 | [skill-creator](file:///skills/skill-creator/SKILL.md) | Crear nuevas habilidades. |
+| [skill-sync](file:///skills/skill-sync/SKILL.md) | Sincronización de skills entre repositorios. |
 
 ## Auto-invoke Skills
 
@@ -79,5 +80,6 @@ Al realizar estas acciones, SIEMPRE invoca primero la skill correspondiente:
 ## Notas Específicas del Proyecto
 
 - **Serverless**: La aplicación corre en AWS Lambda usando `aws-serverless-java-container`.
-- **Arranque**: La clase principal `InvestmentFundsApplication` extiende `SpringBootServletInitializer` y usa `@EnableWebMvc` para garantizar la inicialización correcta del contexto web en Lambda.
+- **Arranque**: La clase principal `InvestmentFundsApplication` extiende `SpringBootServletInitializer`, sobreescribe `configure()` y usa `@EnableWebMvc` junto con `@Import(DispatcherServletAutoConfiguration.class)` para garantizar la inicialización correcta del `DispatcherServlet` en Lambda.
+- **Respuestas HTTP**: Se requiere la dependencia `jackson-databind` para la serialización JSON correcta y evitar errores 406. Los controladores deben devolver `ResponseEntity<?>`.
 - **Logging**: Se usa SLF4J/Logback. En producción (Lambda), mantener niveles de log en INFO para evitar costos excesivos y ruido.
