@@ -13,11 +13,8 @@ import com.investment.funds.application.usecase.UseCase;
 import com.investment.funds.application.usecase.dto.CancelSubscribeInput;
 import com.investment.funds.application.usecase.dto.SubscribeInput;
 import com.investment.funds.domain.exception.BusinessException;
-import com.investment.funds.domain.model.Fund;
 import com.investment.funds.infrastructure.controller.contract.CancelSubscriptionRequest;
 import com.investment.funds.infrastructure.controller.contract.SubscribeRequest;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/funds")

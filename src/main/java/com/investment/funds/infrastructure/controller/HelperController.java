@@ -20,6 +20,7 @@ public class HelperController {
     @PostMapping("/seed")
     public ResponseEntity<String> seedData() {
         helperUseCase.execute(null);
+
         return ResponseEntity.ok("Data seeded successfully");
     }
 }
