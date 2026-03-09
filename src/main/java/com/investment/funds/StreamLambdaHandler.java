@@ -26,6 +26,7 @@ public class StreamLambdaHandler implements RequestStreamHandler {
     @Override
     public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context)
             throws IOException {
+        System.out.println(">>> DEBUG: StreamLambdaHandler received request");
         handler.proxyStream(inputStream, outputStream, context);
     }
 }
