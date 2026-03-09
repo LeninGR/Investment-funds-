@@ -25,7 +25,7 @@ class ClientControllerTest {
 
     private MockMvc mockMvc;
 
-    @Mock
+    @Mock(name = "getClient")
     private UseCase<String, Client> getClient;
 
     @InjectMocks
@@ -37,7 +37,7 @@ class ClientControllerTest {
     }
 
     @Test
-    void shouldReturnClientDetails() throws Exception {
+    void getClient_ShouldReturnClientDetails_WhenExists() throws Exception {
         // Arrange
         String clientId = "1";
         Client client = new Client(clientId, "John Doe", new BigDecimal("500000"), "john@example.com", "1234567890",

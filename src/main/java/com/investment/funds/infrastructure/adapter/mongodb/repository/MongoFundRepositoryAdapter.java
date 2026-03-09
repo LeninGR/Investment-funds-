@@ -2,6 +2,8 @@ package com.investment.funds.infrastructure.adapter.mongodb.repository;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,7 @@ import com.investment.funds.infrastructure.adapter.mongodb.document.FundDocument
 @Profile("!local")
 public class MongoFundRepositoryAdapter implements FundRepository {
 
+    private static final Logger logger = LoggerFactory.getLogger(MongoFundRepositoryAdapter.class);
     private final SpringDataFundRepository springDataFundRepository;
 
     public MongoFundRepositoryAdapter(SpringDataFundRepository springDataFundRepository) {
@@ -27,7 +30,10 @@ public class MongoFundRepositoryAdapter implements FundRepository {
 
     @Override
     public void save(Fund fund) {
-        springDataFundRepository.save(toDocument(fund));
+        logger.info("Saving fund with id: {}", fund.id());
+        FundDocument document = toDocument(fund);
+        FundDocument saved = springDataFundRepository.save(document);
+        logger.info("Fund saved successfully. ID: {}", saved.getId());
     }
 
     private Fund toDomain(FundDocument document) {

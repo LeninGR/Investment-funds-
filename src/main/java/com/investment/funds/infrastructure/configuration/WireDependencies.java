@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import com.investment.funds.application.usecase.CancelSubscribeUseCase;
 import com.investment.funds.application.usecase.GetClientUseCase;
 import com.investment.funds.application.usecase.GetTransactionHistoryUseCase;
+import com.investment.funds.application.usecase.HelperUseCase;
 import com.investment.funds.application.usecase.SubscribeUseCase;
 import com.investment.funds.application.usecase.UseCase;
 import com.investment.funds.application.usecase.dto.CancelSubscribeInput;
@@ -21,6 +22,11 @@ import com.investment.funds.domain.port.Notification;
 import com.investment.funds.domain.port.TransactionRepository;
 import com.investment.funds.domain.service.TransactionService;
 
+import com.investment.funds.infrastructure.controller.ClientController;
+import com.investment.funds.infrastructure.controller.FundController;
+import com.investment.funds.infrastructure.controller.HelperController;
+import com.investment.funds.infrastructure.controller.TransactionController;
+
 @Configuration
 public class WireDependencies {
 
@@ -29,6 +35,7 @@ public class WireDependencies {
         return new TransactionService(transactionRepository);
     }
 
+    // Use Cases
     @Bean
     public UseCase<String, Client> getClient(ClientRepository clientRepository) {
         return new GetClientUseCase(clientRepository);
@@ -55,5 +62,33 @@ public class WireDependencies {
     public UseCase<GetTransactionHistoryInput, List<Transaction>> getTransactionHistory(
             TransactionService transactionService) {
         return new GetTransactionHistoryUseCase(transactionService);
+    }
+
+    @Bean
+    public UseCase<Void, Void> helper(ClientRepository clientRepository, FundRepository fundRepository) {
+        return new HelperUseCase(clientRepository, fundRepository);
+    }
+
+    // Controllers
+    @Bean
+    public ClientController clientController(UseCase<String, Client> getClient) {
+        return new ClientController(getClient);
+    }
+
+    @Bean
+    public FundController fundController(UseCase<SubscribeInput, Void> subscribe,
+            UseCase<CancelSubscribeInput, Void> cancelSubscribe) {
+        return new FundController(subscribe, cancelSubscribe);
+    }
+
+    @Bean
+    public TransactionController transactionController(
+            UseCase<GetTransactionHistoryInput, List<Transaction>> getTransactionHistory) {
+        return new TransactionController(getTransactionHistory);
+    }
+
+    @Bean
+    public HelperController helperController(UseCase<Void, Void> helper) {
+        return new HelperController(helper);
     }
 }

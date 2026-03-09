@@ -2,6 +2,8 @@ package com.investment.funds.infrastructure.adapter.mongodb.repository;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,7 @@ import com.investment.funds.infrastructure.adapter.mongodb.document.ClientDocume
 @Profile("!local")
 public class MongoClientRepositoryAdapter implements ClientRepository {
 
+    private static final Logger logger = LoggerFactory.getLogger(MongoClientRepositoryAdapter.class);
     private final SpringDataClientRepository springDataClientRepository;
 
     public MongoClientRepositoryAdapter(SpringDataClientRepository springDataClientRepository) {
@@ -28,7 +31,10 @@ public class MongoClientRepositoryAdapter implements ClientRepository {
 
     @Override
     public void save(Client client) {
-        springDataClientRepository.save(toDocument(client));
+        logger.info("Saving client with id: {}", client.id());
+        ClientDocument document = toDocument(client);
+        ClientDocument saved = springDataClientRepository.save(document);
+        logger.info("Client saved successfully. ID: {}", saved.getId());
     }
 
     private Client toDomain(ClientDocument document) {

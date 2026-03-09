@@ -31,7 +31,7 @@ class TransactionServiceTest {
     private TransactionService transactionService;
 
     @Test
-    void shouldSaveTransaction() {
+    void save_ShouldCallRepositorySave() {
         // Arrange
         Transaction transaction = new Transaction("client1", "fund1", TransactionType.OPENING, new BigDecimal("100"));
 
@@ -43,7 +43,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void shouldGetHistory() {
+    void getHistory_ShouldReturnTransactions_WhenFound() {
         // Arrange
         String clientId = "client1";
         List<Transaction> transactions = List.of(
@@ -60,7 +60,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void shouldHaveActiveSubscriptionWhenLastTransactionIsOpening() {
+    void hasActiveSubscription_ShouldReturnTrue_WhenLastTransactionIsOpening() {
         // Arrange
         String clientId = "client1";
         String fundId = "fund1";
@@ -85,7 +85,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void shouldNotHaveActiveSubscriptionWhenLastTransactionIsCancellation() {
+    void hasActiveSubscription_ShouldReturnFalse_WhenLastTransactionIsCancellation() {
         // Arrange
         String clientId = "client1";
         String fundId = "fund1";
