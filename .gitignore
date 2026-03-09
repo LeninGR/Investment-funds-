@@ -45,3 +45,6 @@ replay_pid*
 # Env
 .env
 .env.*
+
+# Local JDK for build execution
+.jdk/

@@ -11,6 +11,9 @@ version = '1.0.0'
 java {
 	sourceCompatibility = '17'
 	targetCompatibility = '17'
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 repositories {
@@ -37,8 +40,8 @@ tasks.named('test') {
 }
 
 tasks.named('shadowJar') {
-	archiveClassifier = 'aws-v2'
-    archiveVersion = '' // Disable version in filename
+	archiveClassifier = 'aws'
+    archiveVersion = ''
 	mergeServiceFiles()
 	append 'META-INF/spring.handlers'
 	append 'META-INF/spring.schemas'
@@ -47,5 +50,4 @@ tasks.named('shadowJar') {
 		paths = ['META-INF/spring.factories']
 		mergeStrategy = "append"
 	}
-    // Force rebuild timestamp: 2026-03-09 06:17
 }
