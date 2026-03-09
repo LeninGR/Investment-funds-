@@ -51,76 +51,7 @@ Base de datos NoSQL orientada a documentos.
 
 El siguiente diagrama muestra cómo interactúan las capas de la aplicación, respetando la regla de dependencia (las dependencias apuntan hacia adentro).
 
-```mermaid
-graph TD
-    subgraph "External Actors"
-        User(Cliente - API Consumer)
-        Admin(Administrador)
-    end
-
-    subgraph "Infrastructure Layer - Driving Adapters"
-        APIGateway[AWS API Gateway]
-        LambdaHandler[StreamLambdaHandler]
-        Controllers[Rest Controllers]
-        
-        User --> APIGateway
-        Admin --> APIGateway
-        APIGateway --> LambdaHandler
-        LambdaHandler --> Controllers
-    end
-
-    subgraph "Application Layer"
-        UseCases[Casos de Uso - Subscribe, Cancel, History]
-        DTOs[DTOs Input/Output]
-        
-        Controllers --> UseCases
-        UseCases -.-> DTOs
-    end
-
-    subgraph "Domain Layer - Core"
-        Entities[Entidades - Client, Fund, Transaction]
-        DomainServices[Servicios de Dominio]
-        PortsIn[Puertos Entrada - Interfaces UseCase]
-        PortsOut[Puertos Salida - Interfaces Repository/Notification]
-        
-        UseCases --> DomainServices
-        UseCases --> Entities
-        UseCases ..|> PortsIn
-        UseCases --> PortsOut
-        DomainServices --> Entities
-    end
-
-    subgraph "Infrastructure Layer - Driven Adapters"
-        MongoAdapter[Mongo Repository Adapter]
-        InMemoryAdapter[In-Memory Repository Adapter]
-        NotifyAdapter[Notification Adapter]
-        
-        MongoAdapter ..|> PortsOut
-        InMemoryAdapter ..|> PortsOut
-        NotifyAdapter ..|> PortsOut
-    end
-
-    subgraph "External Systems"
-        MongoDB[(MongoDB Atlas)]
-        EmailSvc[Email Service]
-        SMSSvc[SMS Service]
-        
-        MongoAdapter --> MongoDB
-        NotifyAdapter --> EmailSvc
-        NotifyAdapter --> SMSSvc
-    end
-
-    %% Styles
-    classDef domain fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    classDef app fill:#fff3e0,stroke:#e65100,stroke-width:2px;
-    classDef infraDriving fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
-    classDef infraDriven fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
-
-    class Entities,DomainServices,PortsIn,PortsOut domain;
-    class UseCases,DTOs app;
-    class APIGateway,LambdaHandler,Controllers infraDriving;
-    class MongoAdapter,InMemoryAdapter,NotifyAdapter infraDriven;
-```
+![Diagrama de Componentes](assets/component-diagram.png)
 
 ## 📂 Estructura de Paquetes
 
