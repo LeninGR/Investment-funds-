@@ -5,14 +5,14 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.investment.funds.application.usecase.UseCase;
 import com.investment.funds.application.usecase.dto.GetTransactionHistoryInput;
 import com.investment.funds.domain.model.Transaction;
 
-@RestController
 @RequestMapping("/transactions")
+@ResponseBody
 public class TransactionController {
 
     private final UseCase<GetTransactionHistoryInput, List<Transaction>> getTransactionHistory;
