@@ -30,6 +30,7 @@ public class WireDependencies {
         return new TransactionService(transactionRepository);
     }
 
+    // Use Cases
     @Bean
     public UseCase<String, Client> getClient(ClientRepository clientRepository) {
         return new GetClientUseCase(clientRepository);
