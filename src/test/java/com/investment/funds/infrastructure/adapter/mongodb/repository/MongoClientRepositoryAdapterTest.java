@@ -2,6 +2,7 @@ package com.investment.funds.infrastructure.adapter.mongodb.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -29,7 +30,7 @@ class MongoClientRepositoryAdapterTest {
     private MongoClientRepositoryAdapter mongoClientRepositoryAdapter;
 
     @Test
-    void shouldFindById() {
+    void findById_ShouldReturnClient_WhenFound() {
         // Arrange
         String id = "1";
         ClientDocument document = new ClientDocument(id, "Client Name", BigDecimal.TEN, "email@test.com", "1234567890",
@@ -50,10 +51,13 @@ class MongoClientRepositoryAdapterTest {
     }
 
     @Test
-    void shouldSave() {
+    void save_ShouldPersistClient() {
         // Arrange
         Client client = new Client("1", "Client Name", BigDecimal.TEN, "email@test.com", "1234567890",
                 NotificationPreference.EMAIL);
+        ClientDocument document = new ClientDocument("1", "Client Name", BigDecimal.TEN, "email@test.com", "1234567890",
+                "EMAIL");
+        when(springDataClientRepository.save(any(ClientDocument.class))).thenReturn(document);
 
         // Act
         mongoClientRepositoryAdapter.save(client);

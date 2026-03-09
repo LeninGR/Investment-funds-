@@ -1,15 +1,16 @@
 package com.investment.funds.infrastructure.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.investment.funds.application.usecase.UseCase;
 import com.investment.funds.domain.model.Client;
 
+@RestController
 @RequestMapping("/clients")
-@ResponseBody
 public class ClientController {
 
     private final UseCase<String, Client> getClient;
@@ -19,7 +20,7 @@ public class ClientController {
     }
 
     @GetMapping("/{clientId}")
-    public Client getClient(@PathVariable String clientId) {
-        return getClient.execute(clientId);
+    public ResponseEntity<Client> getClient(@PathVariable String clientId) {
+        return ResponseEntity.ok(getClient.execute(clientId));
     }
 }

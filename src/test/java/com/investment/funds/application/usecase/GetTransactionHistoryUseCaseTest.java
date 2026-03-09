@@ -27,7 +27,7 @@ class GetTransactionHistoryUseCaseTest {
     private GetTransactionHistoryUseCase getTransactionHistory;
 
     @Test
-    void shouldReturnTransactionHistoryForClient() {
+    void execute_ShouldReturnTransactionHistory_WhenFound() {
         // Arrange
         String clientId = "client1";
         Transaction t1 = new Transaction(clientId, "fund1", TransactionType.OPENING, new BigDecimal("1000"));
@@ -45,7 +45,7 @@ class GetTransactionHistoryUseCaseTest {
     }
 
     @Test
-    void shouldReturnEmptyListWhenNoTransactionsFound() {
+    void execute_ShouldReturnEmptyList_WhenNoTransactions() {
         // Arrange
         String clientId = "client1";
         when(transactionService.getHistory(clientId)).thenReturn(List.of());

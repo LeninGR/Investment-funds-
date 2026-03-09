@@ -19,12 +19,6 @@ public class SimpleLoggingFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        System.out.println(">>> SPRING FILTER: Request received: " + request.getMethod() + " " + request.getRequestURI());
-        System.out.println(">>> SPRING FILTER: Context Path: " + request.getContextPath());
-        System.out.println(">>> SPRING FILTER: Servlet Path: " + request.getServletPath());
-        
         filterChain.doFilter(request, response);
-        
-        System.out.println(">>> SPRING FILTER: Response status: " + response.getStatus());
     }
 }
