@@ -54,11 +54,11 @@ El siguiente diagrama muestra cómo interactúan las capas de la aplicación, re
 ```mermaid
 graph TD
     subgraph "External Actors"
-        User((Cliente/API Consumer))
-        Admin((Administrador))
+        User(Cliente - API Consumer)
+        Admin(Administrador)
     end
 
-    subgraph "Infrastructure Layer (Driving Adapters)"
+    subgraph "Infrastructure Layer - Driving Adapters"
         APIGateway[AWS API Gateway]
         LambdaHandler[StreamLambdaHandler]
         Controllers[Rest Controllers]
@@ -70,18 +70,18 @@ graph TD
     end
 
     subgraph "Application Layer"
-        UseCases[Casos de Uso<br/>(Subscribe, Cancel, History)]
+        UseCases[Casos de Uso - Subscribe, Cancel, History]
         DTOs[DTOs Input/Output]
         
         Controllers --> UseCases
         UseCases -.-> DTOs
     end
 
-    subgraph "Domain Layer (Core)"
-        Entities[Entidades<br/>(Client, Fund, Transaction)]
+    subgraph "Domain Layer - Core"
+        Entities[Entidades - Client, Fund, Transaction]
         DomainServices[Servicios de Dominio]
-        PortsIn[Puertos Entrada<br/>(Interfaces UseCase)]
-        PortsOut[Puertos Salida<br/>(Interfaces Repository/Notification)]
+        PortsIn[Puertos Entrada - Interfaces UseCase]
+        PortsOut[Puertos Salida - Interfaces Repository/Notification]
         
         UseCases --> DomainServices
         UseCases --> Entities
@@ -90,7 +90,7 @@ graph TD
         DomainServices --> Entities
     end
 
-    subgraph "Infrastructure Layer (Driven Adapters)"
+    subgraph "Infrastructure Layer - Driven Adapters"
         MongoAdapter[Mongo Repository Adapter]
         InMemoryAdapter[In-Memory Repository Adapter]
         NotifyAdapter[Notification Adapter]
