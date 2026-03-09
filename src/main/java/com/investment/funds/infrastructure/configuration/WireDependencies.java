@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import com.investment.funds.application.usecase.CancelSubscribeUseCase;
 import com.investment.funds.application.usecase.GetClientUseCase;
 import com.investment.funds.application.usecase.GetTransactionHistoryUseCase;
+import com.investment.funds.application.usecase.HelperUseCase;
 import com.investment.funds.application.usecase.SubscribeUseCase;
 import com.investment.funds.application.usecase.UseCase;
 import com.investment.funds.application.usecase.dto.CancelSubscribeInput;
@@ -55,5 +56,10 @@ public class WireDependencies {
     public UseCase<GetTransactionHistoryInput, List<Transaction>> getTransactionHistory(
             TransactionService transactionService) {
         return new GetTransactionHistoryUseCase(transactionService);
+    }
+
+    @Bean
+    public UseCase<Void, Void> helper(ClientRepository clientRepository, FundRepository fundRepository) {
+        return new HelperUseCase(clientRepository, fundRepository);
     }
 }
