@@ -11,4 +11,12 @@ public class InvestmentFundsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(InvestmentFundsApplication.class, args);
 	}
+	
+	@org.springframework.context.annotation.Bean
+	public org.springframework.boot.CommandLineRunner logConfig(org.springframework.context.ApplicationContext ctx) {
+		return args -> {
+			System.out.println(">>> DEBUG: Active Profiles: " + java.util.Arrays.toString(ctx.getEnvironment().getActiveProfiles()));
+			System.out.println(">>> DEBUG: Logging Level DispatcherServlet: " + ctx.getEnvironment().getProperty("logging.level.org.springframework.web.servlet.DispatcherServlet"));
+		};
+	}
 }
