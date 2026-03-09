@@ -1,0 +1,158 @@
+openapi: 3.0.3
+info:
+  title: Investment Funds API
+  description: API para la gestión de suscripciones a fondos de inversión. Desplegada en AWS Lambda.
+  version: 1.0.0
+servers:
+  - url: https://dl5cybc99g.execute-api.us-east-1.amazonaws.com/prod
+    description: Production Server (AWS Lambda)
+paths:
+  /funds/subscribe:
+    post:
+      summary: Suscribirse a un fondo
+      description: Permite a un cliente suscribirse a un fondo específico si tiene saldo suficiente.
+      operationId: subscribeToFund
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - clientId
+                - fundId
+              properties:
+                clientId:
+                  type: string
+                  example: "1"
+                fundId:
+                  type: string
+                  example: "1"
+      responses:
+        '200':
+          description: Suscripción exitosa
+        '400':
+          description: Error de negocio (Saldo insuficiente, ya suscrito, etc.)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Insufficient balance"
+        '404':
+          description: Cliente o Fondo no encontrado
+        '500':
+          description: Error interno del servidor
+
+  /funds/cancel:
+    post:
+      summary: Cancelar suscripción
+      description: Cancela la suscripción de un cliente a un fondo y devuelve el monto mínimo al saldo.
+      operationId: cancelSubscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - clientId
+                - fundId
+              properties:
+                clientId:
+                  type: string
+                  example: "1"
+                fundId:
+                  type: string
+                  example: "1"
+      responses:
+        '200':
+          description: Cancelación exitosa
+        '400':
+          description: Error de negocio
+        '404':
+          description: Cliente o Fondo no encontrado
+
+  /clients/{clientId}:
+    get:
+      summary: Obtener información del cliente
+      description: Retorna los detalles de un cliente, incluyendo su saldo actual.
+      operationId: getClient
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del cliente
+      responses:
+        '200':
+          description: Información del cliente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  balance:
+                    type: number
+                  email:
+                    type: string
+        '404':
+          description: Cliente no encontrado
+
+  /transactions/history/{clientId}:
+    get:
+      summary: Historial de transacciones
+      description: Obtiene las últimas transacciones realizadas por un cliente.
+      operationId: getTransactionHistory
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del cliente
+      responses:
+        '200':
+          description: Lista de transacciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    clientId:
+                      type: string
+                    fundId:
+                      type: string
+                    type:
+                      type: string
+                      enum: [OPENING, CANCELLATION]
+                    amount:
+                      type: number
+                    timestamp:
+                      type: string
+                      format: date-time
+
+  /helper/seed:
+    post:
+      summary: Seed Data (Setup)
+      description: Endpoint utilitario para poblar la base de datos con clientes y fondos de prueba iniciales. Usar solo en entornos no productivos o al iniciar.
+      operationId: seedData
+      responses:
+        '200':
+          description: Datos creados exitosamente
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Data seeded successfully"

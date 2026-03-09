@@ -1,0 +1,287 @@
+{
+	"info": {
+		"_postman_id": "investment-funds-collection",
+		"name": "Investment Funds API",
+		"description": "Colección de endpoints para la API de Investment Funds desplegada en AWS Lambda.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://dl5cybc99g.execute-api.us-east-1.amazonaws.com/prod",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Setup",
+			"item": [
+				{
+					"name": "Seed Data (Create Clients & Funds)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/helper/seed",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"helper",
+								"seed"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Success Scenarios (Email)",
+			"item": [
+				{
+					"name": "Get Client 1 Balance (Initial)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/clients/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"clients",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Subscribe Client 1 to Fund 1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientId\": \"1\",\n  \"fundId\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/funds/subscribe",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"funds",
+								"subscribe"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Client 1 Balance (After Subscription)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/clients/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"clients",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Transaction History (After Subscription)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/transactions/history/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"transactions",
+								"history",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Cancel Subscription Fund 1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientId\": \"1\",\n  \"fundId\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/funds/cancel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"funds",
+								"cancel"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Client 1 Balance (After Cancellation)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/clients/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"clients",
+								"1"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Success Scenarios (SMS)",
+			"item": [
+				{
+					"name": "Get Client 2 Balance (Initial)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/clients/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"clients",
+								"2"
+							]
+						}
+					}
+				},
+				{
+					"name": "Subscribe Client 2 to Fund 1 (SMS)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientId\": \"2\",\n  \"fundId\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/funds/subscribe",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"funds",
+								"subscribe"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Client 2 Balance (After Subscription)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/clients/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"clients",
+								"2"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Error Scenarios",
+			"item": [
+				{
+					"name": "Insufficient Balance (Client 2 -> Fund 2)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientId\": \"2\",\n  \"fundId\": \"2\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/funds/subscribe",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"funds",
+								"subscribe"
+							]
+						}
+					}
+				},
+				{
+					"name": "Idempotency Check (Subscribe Twice)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientId\": \"1\",\n  \"fundId\": \"2\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/funds/subscribe",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"funds",
+								"subscribe"
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}
