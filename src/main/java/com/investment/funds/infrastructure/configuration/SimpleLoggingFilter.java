@@ -22,6 +22,8 @@ public class SimpleLoggingFilter extends OncePerRequestFilter {
         System.out.println(">>> SPRING FILTER: Request received: " + request.getMethod() + " " + request.getRequestURI());
         System.out.println(">>> SPRING FILTER: Context Path: " + request.getContextPath());
         System.out.println(">>> SPRING FILTER: Servlet Path: " + request.getServletPath());
+        System.out.println(">>> SPRING FILTER: Path Info: " + request.getPathInfo());
+        System.out.println(">>> SPRING FILTER: Query String: " + request.getQueryString());
         
         filterChain.doFilter(request, response);
         
