@@ -2,6 +2,7 @@ package com.investment.funds.infrastructure.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,7 @@ public class TransactionController {
     }
 
     @GetMapping("/history/{clientId}")
-    public List<Transaction> getHistory(@PathVariable String clientId) {
-        return getTransactionHistory.execute(new GetTransactionHistoryInput(clientId));
+    public ResponseEntity<List<Transaction>> getHistory(@PathVariable String clientId) {
+        return ResponseEntity.ok(getTransactionHistory.execute(new GetTransactionHistoryInput(clientId)));
     }
 }
