@@ -9,6 +9,12 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = "com.investment.funds.infrastructure.adapter.mongodb.repository")
 public class InvestmentFundsApplication extends SpringBootServletInitializer {
 
+	@Override
+	protected org.springframework.boot.builder.SpringApplicationBuilder configure(
+			org.springframework.boot.builder.SpringApplicationBuilder application) {
+		return application.sources(InvestmentFundsApplication.class);
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(InvestmentFundsApplication.class, args);
 	}
