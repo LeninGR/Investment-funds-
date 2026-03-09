@@ -13,7 +13,7 @@ jobs:
     environment: production
 
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up JDK 17
@@ -21,9 +21,15 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
+          cache: 'gradle'
 
-      - name: Setup Node.js (for Serverless)
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew clean shadowJar
+
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
@@ -31,19 +37,11 @@ jobs:
       - name: Install Serverless Framework
         run: npm install -g serverless@3.38.0
 
-      - name: Build with Gradle
-        run: ./gradlew clean shadowJar
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      - name: Deploy to AWS Lambda
+      - name: Serverless Deploy
         run: serverless deploy --stage prod
         env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           MONGO_HOST: ${{ secrets.MONGO_HOST }}
           MONGO_PORT: ${{ secrets.MONGO_PORT }}
           MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
