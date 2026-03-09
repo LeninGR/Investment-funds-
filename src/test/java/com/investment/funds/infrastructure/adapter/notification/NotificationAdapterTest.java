@@ -35,7 +35,7 @@ class NotificationAdapterTest {
     }
 
     @Test
-    void shouldSendNotificationUsingSupportedStrategy() {
+    void sendNotification_ShouldUseSupportedStrategy() {
         // Arrange
         Client client = new Client("1", "Test Client", BigDecimal.TEN, "email@test.com", "1234567890",
                 NotificationPreference.EMAIL);
@@ -55,7 +55,7 @@ class NotificationAdapterTest {
     }
 
     @Test
-    void shouldNotSendNotificationWhenNoStrategySupported() {
+    void sendNotification_ShouldNotSend_WhenNoStrategySupported() {
         // Arrange
         Client client = new Client("1", "Test Client", BigDecimal.TEN, "email@test.com", "1234567890",
                 NotificationPreference.SMS);

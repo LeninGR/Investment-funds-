@@ -28,7 +28,7 @@ class MongoFundRepositoryAdapterTest {
     private MongoFundRepositoryAdapter mongoFundRepositoryAdapter;
 
     @Test
-    void shouldFindById() {
+    void findById_ShouldReturnFund_WhenFound() {
         // Arrange
         String id = "1";
         FundDocument document = new FundDocument(id, "Fund Name", BigDecimal.TEN, "Category");
@@ -46,7 +46,7 @@ class MongoFundRepositoryAdapterTest {
     }
 
     @Test
-    void shouldSave() {
+    void save_ShouldPersistFund() {
         // Arrange
         Fund fund = new Fund("1", "Fund Name", BigDecimal.TEN, "Category");
 

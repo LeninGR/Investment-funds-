@@ -29,7 +29,7 @@ class MongoTransactionRepositoryAdapterTest {
     private MongoTransactionRepositoryAdapter mongoTransactionRepositoryAdapter;
 
     @Test
-    void shouldSave() {
+    void save_ShouldPersistTransaction() {
         // Arrange
         Transaction transaction = new Transaction("1", "client1", "fund1", TransactionType.OPENING, BigDecimal.TEN,
                 LocalDateTime.now());

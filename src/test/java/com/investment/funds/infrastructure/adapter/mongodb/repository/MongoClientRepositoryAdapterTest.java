@@ -29,7 +29,7 @@ class MongoClientRepositoryAdapterTest {
     private MongoClientRepositoryAdapter mongoClientRepositoryAdapter;
 
     @Test
-    void shouldFindById() {
+    void findById_ShouldReturnClient_WhenFound() {
         // Arrange
         String id = "1";
         ClientDocument document = new ClientDocument(id, "Client Name", BigDecimal.TEN, "email@test.com", "1234567890",
@@ -50,7 +50,7 @@ class MongoClientRepositoryAdapterTest {
     }
 
     @Test
-    void shouldSave() {
+    void save_ShouldPersistClient() {
         // Arrange
         Client client = new Client("1", "Client Name", BigDecimal.TEN, "email@test.com", "1234567890",
                 NotificationPreference.EMAIL);

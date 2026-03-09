@@ -49,7 +49,7 @@ class SubscribeUseCaseTest {
     private SubscribeUseCase subscribe;
 
     @Test
-    void shouldSubscribeSuccessfullyWhenBalanceIsSufficient() {
+    void execute_ShouldSubscribeSuccessfully_WhenBalanceIsSufficient() {
         // Arrange
         String clientId = "client1";
         String fundId = "fund1";
@@ -78,7 +78,7 @@ class SubscribeUseCaseTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenAlreadySubscribed() {
+    void execute_ShouldThrowException_WhenAlreadySubscribed() {
         // Arrange
         String clientId = "client1";
         String fundId = "fund1";

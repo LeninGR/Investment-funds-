@@ -42,7 +42,7 @@ class GetClientUseCaseTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenClientNotFound() {
+    void execute_ShouldThrowException_WhenClientNotFound() {
         // Arrange
         String clientId = "1";
         when(clientRepository.findById(clientId)).thenReturn(Optional.empty());

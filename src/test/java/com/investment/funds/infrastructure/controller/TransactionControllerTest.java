@@ -53,7 +53,7 @@ class TransactionControllerTest {
     }
 
     @Test
-    void shouldReturnEmptyListWhenNoTransactions() throws Exception {
+    void getHistory_ShouldReturnEmptyList_WhenNoTransactions() throws Exception {
         // Arrange
         String clientId = "client1";
         when(getTransactionHistoryUseCase.execute(new GetTransactionHistoryInput(clientId))).thenReturn(List.of());

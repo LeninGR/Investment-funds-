@@ -70,7 +70,7 @@ class CancelSubscribeUseCaseTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenCancellingWithoutActiveSubscription() {
+    void execute_ShouldThrowException_WhenNoActiveSubscription() {
         // Arrange
         String clientId = "client1";
         String fundId = "fund1";

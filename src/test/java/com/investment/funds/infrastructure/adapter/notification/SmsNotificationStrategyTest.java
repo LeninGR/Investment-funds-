@@ -17,19 +17,20 @@ class SmsNotificationStrategyTest {
     private final SmsNotificationStrategy strategy = new SmsNotificationStrategy();
 
     @Test
-    void shouldSupportSmsPreference() {
+    void supports_ShouldReturnTrue_WhenSmsPreference() {
         assertTrue(strategy.supports(NotificationPreference.SMS));
     }
 
     @Test
-    void shouldNotSupportEmailPreference() {
+    void supports_ShouldReturnFalse_WhenEmailPreference() {
         assertFalse(strategy.supports(NotificationPreference.EMAIL));
     }
 
     @Test
-    void shouldSendSmsNotification() {
+    void send_ShouldSendSms_WhenInvoked() {
         // Arrange
-        Client client = new Client("1", "Test Client", BigDecimal.TEN, "email@test.com", "1234567890", NotificationPreference.SMS);
+        Client client = new Client("1", "Test Client", BigDecimal.TEN, "email@test.com", "1234567890",
+                NotificationPreference.SMS);
         Fund fund = new Fund("1", "Test Fund", BigDecimal.TEN, "Category");
         String message = "Test Message";
 

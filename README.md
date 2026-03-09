@@ -1,77 +1,92 @@
-# Investment-funds-
+# Investment Funds - Prueba Técnica
 
 > **Disclaimer:** Este repositorio no corresponde a código oficial de BTG Pactual, únicamente corresponde a una prueba técnica personal.
 
-amaris test
+Este proyecto implementa una API REST para la gestión de fondos de inversión, permitiendo a los clientes suscribirse y cancelar suscripciones a fondos, así como consultar su historial de transacciones.
 
-## How to run locally
+## 🏗 Arquitectura
 
-### Prerequisites
-- Java 17+ (OpenJDK 17 recommended)
-- Gradle 8.x or later (or use the provided wrapper)
+El proyecto sigue una **Arquitectura Hexagonal (Puertos y Adaptadores)** para desacoplar la lógica de negocio de los detalles de implementación y la infraestructura.
 
-### Build and Run
+### Estructura del Proyecto
+- **Application (`application/`)**: Contiene los casos de uso (Use Cases) que orquestan la lógica de negocio.
+- **Domain (`domain/`)**: Contiene las entidades del dominio, excepciones y puertos (interfaces) para repositorios y servicios externos.
+- **Infrastructure (`infrastructure/`)**: Contiene la implementación de los adaptadores (Controladores REST, Repositorios MongoDB, Notificaciones) y la configuración del framework.
+
+## 🛠 Tecnologías Utilizadas
+
+- **Java 17**: Lenguaje de programación.
+- **Spring Boot 3.2.5**: Framework para el desarrollo de la aplicación.
+- **MongoDB**: Base de datos NoSQL.
+- **AWS Lambda**: Plataforma de computación serverless donde se despliega la aplicación.
+- **Serverless Framework**: Herramienta para facilitar el despliegue en AWS.
+- **Gradle**: Gestor de dependencias y construcción.
+- **JUnit 5 & Mockito**: Frameworks para pruebas unitarias y TDD.
+
+## 🚀 Ejecución Local
+
+### Prerrequisitos
+- Java 17+
+- Gradle 8.x (o usar el wrapper incluido)
+- MongoDB (local o contenedor Docker)
+
+### Pasos
+1. Clonar el repositorio.
+2. Configurar las variables de entorno para la base de datos en `src/main/resources/application.properties` o mediante variables del sistema:
+   ```properties
+   MONGO_HOST=localhost
+   MONGO_PORT=27017
+   MONGO_DATABASE=investment_funds_db
+   ```
+3. Ejecutar la aplicación:
+   ```bash
+   ./gradlew bootRun
+   ```
+
+## 🧪 Pruebas (TDD)
+
+El proyecto ha sido desarrollado siguiendo prácticas de **TDD (Test Driven Development)**.
+Las pruebas unitarias cubren casos de uso, controladores y servicios de dominio.
+
+Para ejecutar las pruebas:
 ```bash
-# Using the wrapper (Recommended)
-# Run with 'local' profile to use in-memory mock database
-./gradlew bootRun --args='--spring.profiles.active=local'
+./gradlew test
 ```
 
-Alternatively, if you have set `SPRING_PROFILES_ACTIVE=local` in your environment:
-```bash
-./gradlew bootRun
-```
+## ☁️ Despliegue en AWS Lambda
 
-## Deployment to AWS Lambda
+El proyecto utiliza `aws-serverless-java-container` para ejecutar Spring Boot dentro de una función Lambda.
 
-This project is configured to be deployed as an AWS Lambda function using the Serverless Framework.
-
-### Prerequisites
-- Node.js and NPM
-- Serverless Framework (`npm install -g serverless`)
-- AWS CLI configured with appropriate credentials
-
-### Steps to Deploy
-
-1. **Build the Artifact**
-   Create the shadow JAR (Uber-JAR) required for AWS Lambda:
+### Pasos de Despliegue
+1. Generar el artefacto (Shadow Jar):
    ```bash
    ./gradlew clean shadowJar
    ```
-   This will generate `build/libs/investment-funds-1.0.0-aws.jar`.
-
-2. **Deploy**
-   Run the deployment command. By default, it will use the 'prod' profile (defined in serverless.yml):
+2. Desplegar con Serverless Framework:
    ```bash
    serverless deploy
    ```
 
-   **Important:** You must configure the MongoDB environment variables for the Lambda function. You can do this via the AWS Console after deployment or by updating `serverless.yml` (e.g., using SSM Parameter Store or Secrets Manager).
+### Configuración en AWS
+Es necesario configurar las siguientes variables de entorno en la función Lambda (o en `serverless.yml`):
+- `MONGO_HOST`
+- `MONGO_PORT`
+- `MONGO_DATABASE`
+- `MONGO_USERNAME`
+- `MONGO_PASSWORD`
+- `SPRING_PROFILES_ACTIVE=prod`
 
-   Required Environment Variables:
-   - `MONGO_HOST`
-   - `MONGO_PORT`
-   - `MONGO_DATABASE`
-   - `MONGO_USERNAME`
-   - `MONGO_PASSWORD`
+## 📚 API Endpoints
 
-3. **Remove Deployment**
-   To remove the stack from AWS:
-   ```bash
-   serverless remove
-   ```
+### Clientes
+- `GET /clients/{clientId}`: Obtener información de un cliente.
 
-## CI/CD Pipeline (GitHub Actions)
+### Fondos
+- `POST /funds/subscribe`: Suscribirse a un fondo.
+- `POST /funds/cancel`: Cancelar suscripción a un fondo.
 
-This repository includes a GitHub Actions workflow `.github/workflows/deploy.yml` that automatically deploys the application to AWS Lambda when pushing to the `master` branch.
+### Transacciones
+- `GET /transactions/history/{clientId}`: Obtener historial de transacciones.
 
-### Required GitHub Secrets
-
-To enable the pipeline, you must configure the following **Secrets** in your GitHub repository settings (Settings > Secrets and variables > Actions):
-
-*   `AWS_ACCESS_KEY_ID`: Your AWS Access Key.
-*   `AWS_SECRET_ACCESS_KEY`: Your AWS Secret Key.
-
-*(Optional) If you want to automate database credentials injection:*
-*   `MONGO_HOST`
-*   `MONGO_PASSWORD`, etc. (and update `serverless.yml` to reference them).
+### Utilidades
+- `POST /helper/seed`: Poblar la base de datos con datos de prueba (Clientes y Fondos iniciales).
