@@ -111,10 +111,15 @@ graph TD
     end
 
     %% Styles
-    style Domain Layer fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    style Application Layer fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Infrastructure Layer (Driving Adapters) fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    style Infrastructure Layer (Driven Adapters) fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef domain fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef app fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+    classDef infraDriving fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+    classDef infraDriven fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
+
+    class Entities,DomainServices,PortsIn,PortsOut domain;
+    class UseCases,DTOs app;
+    class APIGateway,LambdaHandler,Controllers infraDriving;
+    class MongoAdapter,InMemoryAdapter,NotifyAdapter infraDriven;
 ```
 
 ## 📂 Estructura de Paquetes
