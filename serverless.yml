@@ -22,5 +22,5 @@ functions:
     handler: com.investment.funds.StreamLambdaHandler
     events:
       - http:
-          path: /{proxy+}
+          path: '{proxy+}'
           method: any
